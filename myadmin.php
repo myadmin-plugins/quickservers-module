@@ -5,7 +5,7 @@
  - add way to call/hook into install/uninstall
 */
 return [
-	'name' => 'MyAdmin QuickServers Module for MyAdmin',
+	'name' => 'QuickServers Module',
 	'description' => 'Allows selling of QuickServers Module',
 	'help' => '',
 	'module' => 'quickservers',
