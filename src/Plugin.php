@@ -6,7 +6,21 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Plugin {
 
+	public static $name = 'QuickServers Module';
+	public static $description = 'Allows selling of QuickServers Module';
+	public static $help = '';
+	public static $module = 'quickservers';
+	public static $type = 'module';
+
+
 	public function __construct() {
+	}
+
+	public static function Hooks() {
+		return [
+			'quickservers.load_processing' => ['Detain\MyAdminQuickservers\Plugin', 'Load'],
+			'quickservers.settings' => ['Detain\MyAdminQuickservers\Plugin', 'Settings'],
+		];
 	}
 
 	public static function Load(GenericEvent $event) {
