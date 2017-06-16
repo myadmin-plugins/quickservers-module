@@ -18,8 +18,8 @@ class Plugin {
 
 	public static function Hooks() {
 		return [
-			'quickservers.load_processing' => ['Detain\MyAdminQuickservers\Plugin', 'Load'],
-			'quickservers.settings' => ['Detain\MyAdminQuickservers\Plugin', 'Settings'],
+			'quickservers.load_processing' => [__CLASS__, 'Load'],
+			'quickservers.settings' => [__CLASS__, 'Settings'],
 		];
 	}
 
