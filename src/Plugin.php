@@ -18,8 +18,8 @@ class Plugin {
 
 	public static function Hooks() {
 		return [
-			'quickservers.load_processing' => [ __CLASS__, 'Load' ],
-			'quickservers.settings' => [ __CLASS__, 'Settings' ],
+			'quickservers.load_processing' => [__CLASS__, 'Load'],
+			'quickservers.settings' => [__CLASS__, 'Settings'],
 		];
 	}
 
