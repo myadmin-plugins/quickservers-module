@@ -18,8 +18,8 @@ class Plugin {
 
 	public static function Hooks() {
 		return [
-			'quickservers.load_processing' => [__CLASS__, 'Load'],
-			'quickservers.settings' => [__CLASS__, 'Settings'],
+			'quickservers.load_processing' => [ __CLASS__, 'Load' ],
+			'quickservers.settings' => [ __CLASS__, 'Settings' ],
 		];
 	}
 
@@ -29,6 +29,6 @@ class Plugin {
 
 	public static function Settings(GenericEvent $event) {
 		$settings = $event->getSubject();
-		$settings->add_dropdown_setting('quickservers', 'General', 'outofstock_quickservers', 'Out Of Stock Quickservers', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_QUICKSERVERS'), array('0', '1'), array('No', 'Yes', ));
+		$settings->add_dropdown_setting('quickservers', 'General', 'outofstock_quickservers', 'Out Of Stock Quickservers', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_QUICKSERVERS'), array('0', '1'), array('No', 'Yes',));
 	}
 }
