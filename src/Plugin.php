@@ -18,12 +18,12 @@ class Plugin {
 
 	public static function getHooks() {
 		return [
-			'quickservers.load_processing' => [__CLASS__, 'Load'],
+			'quickservers.load_processing' => [__CLASS__, 'loadProcessing'],
 			'quickservers.settings' => [__CLASS__, 'getSettings'],
 		];
 	}
 
-	public static function Load(GenericEvent $event) {
+	public static function loadProcessing(GenericEvent $event) {
 
 	}
 
