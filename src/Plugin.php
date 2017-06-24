@@ -11,6 +11,24 @@ class Plugin {
 	public static $help = '';
 	public static $module = 'quickservers';
 	public static $type = 'module';
+	public static $settings = [
+		'SERVICE_ID_OFFSET' => 0,
+		'USE_REPEAT_INVOICE' => true,
+		'USE_PACKAGES' => false,
+		'BILLING_DAYS_OFFSET' => 0,
+		'IMGNAME' => 'server_add_48.png',
+		'REPEAT_BILLING_METHOD' => PRORATE_BILLING,
+		'DELETE_PENDING_DAYS' => 30,
+		'SUSPEND_DAYS' => 14,
+		'SUSPEND_WARNING_DAYS' => 7,
+		'TITLE' => 'QuickServers',
+		'MENUNAME' => 'QuickServers',
+		'EMAIL_FROM' => 'support@interserver.net',
+		'TBLNAME' => 'QuickServers',
+		'TABLE' => 'quickservers',
+		'TITLE_FIELD' => 'qs_hostname',
+		'TITLE_FIELD2' => 'qs_ip',
+		'PREFIX' => 'qs'];
 
 
 	public function __construct() {
