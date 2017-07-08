@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class Plugin {
 
 	public static $name = 'QuickServers Module';
-	public static $description = 'Allows selling of QuickServers Module';
+	public static $description = 'Allows selling of Servers that create a VPS using 100% of the resources to allow to manage the server in ways you can only with a VPS but while having a full servers worth of hardware at your disposal.';
 	public static $help = '';
 	public static $module = 'quickservers';
 	public static $type = 'module';
@@ -38,7 +38,14 @@ class Plugin {
 		return [
 			self::$module.'.load_processing' => [__CLASS__, 'loadProcessing'],
 			self::$module.'.settings' => [__CLASS__, 'getSettings'],
+			self::$module.'.deactivate' => [__CLASS__, 'getDeactivate'],
 		];
+	}
+
+	public static function getDeactivate(GenericEvent $event) {
+		myadmin_log(self::$module, 'info', self::$name.' Deactivation', __LINE__, __FILE__);
+		$serviceClass = $event->getSubject();
+		$GLOBALS['tf']->history->add(self::$module.'queue', $serviceClass->getId(), 'delete', '', $serviceClass->getCustid());
 	}
 
 	public static function loadProcessing(GenericEvent $event) {
