@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Plugin {
 
-	public static $name = 'QuickServers Module';
+	public static $name = 'QuickServers';
 	public static $description = 'Allows selling of Servers that create a VPS using 100% of the resources to allow to manage the server in ways you can only with a VPS but while having a full servers worth of hardware at your disposal.';
 	public static $help = '';
 	public static $module = 'quickservers';
