@@ -4,6 +4,11 @@ namespace Detain\MyAdminQuickservers;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+/**
+ * Class Plugin
+ *
+ * @package Detain\MyAdminQuickservers
+ */
 class Plugin {
 
 	public static $name = 'QuickServers';
@@ -30,10 +35,15 @@ class Plugin {
 		'TITLE_FIELD2' => 'qs_ip',
 		'PREFIX' => 'qs'];
 
-
+	/**
+	 * Plugin constructor.
+	 */
 	public function __construct() {
 	}
 
+	/**
+	 * @return array
+	 */
 	public static function getHooks() {
 		return [
 			self::$module.'.load_processing' => [__CLASS__, 'loadProcessing'],
@@ -42,12 +52,18 @@ class Plugin {
 		];
 	}
 
+	/**
+	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
+	 */
 	public static function getDeactivate(GenericEvent $event) {
 		myadmin_log(self::$module, 'info', self::$name.' Deactivation', __LINE__, __FILE__);
 		$serviceClass = $event->getSubject();
 		$GLOBALS['tf']->history->add(self::$module.'queue', $serviceClass->getId(), 'delete', '', $serviceClass->getCustid());
 	}
 
+	/**
+	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
+	 */
 	public static function loadProcessing(GenericEvent $event) {
 		$service = $event->getSubject();
 		$service->setModule(self::$module)
@@ -87,6 +103,9 @@ class Plugin {
 			})->register();
 	}
 
+	/**
+	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
+	 */
 	public static function getSettings(GenericEvent $event) {
 		$settings = $event->getSubject();
 		$settings->add_dropdown_setting(self::$module, 'General', 'outofstock_quickservers', 'Out Of Stock Quickservers', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_QUICKSERVERS'), ['0', '1'], ['No', 'Yes']);
