@@ -92,13 +92,13 @@ class Plugin {
 				}
 				$smarty = new \TFSmarty;
 				$smarty->assign('qs_name', $serviceTypes[$serviceInfo[$settings['PREFIX'].'_type']]['services_name']);
-				$email = $smarty->fetch('email/admin_email_qs_reactivated.tpl');
+				$email = $smarty->fetch('email/admin/qs_reactivated.tpl');
 				$subject = $db->Record[$settings['TITLE_FIELD']].' '.$serviceTypes[$serviceInfo[$settings['PREFIX'].'_type']]['services_name'].' '.$settings['TBLNAME'].' Re-Activated';
 				$headers = '';
 				$headers .= 'MIME-Version: 1.0'.EMAIL_NEWLINE;
 				$headers .= 'Content-type: text/html; charset=UTF-8'.EMAIL_NEWLINE;
 				$headers .= 'From: '.TITLE.' <'.EMAIL_FROM.'>'.EMAIL_NEWLINE;
-				admin_mail($subject, $email, $headers, FALSE, 'admin_email_qs_reactivated.tpl');
+				admin_mail($subject, $email, $headers, FALSE, 'admin/qs_reactivated.tpl');
 			})->setDisable(function($service) {
 			})->setTerminate(function($service) {
 				$serviceInfo = $service->getServiceInfo();
