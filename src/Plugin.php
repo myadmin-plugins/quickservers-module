@@ -21,7 +21,7 @@ class Plugin {
 		'USE_REPEAT_INVOICE' => TRUE,
 		'USE_PACKAGES' => FALSE,
 		'BILLING_DAYS_OFFSET' => 0,
-		'IMGNAME' => 'server_add_48.png',
+		'IMGNAME' => 'server.png',
 		'REPEAT_BILLING_METHOD' => PRORATE_BILLING,
 		'DELETE_PENDING_DAYS' => 30,
 		'SUSPEND_DAYS' => 14,
