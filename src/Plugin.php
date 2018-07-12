@@ -130,5 +130,6 @@ class Plugin {
 	public static function getSettings(GenericEvent $event) {
 		$settings = $event->getSubject();
 		$settings->add_dropdown_setting(self::$module, 'General', 'outofstock_quickservers', 'Out Of Stock Quickservers', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_QUICKSERVERS'), ['0', '1'], ['No', 'Yes']);
+		$settings->add_master_text_setting(self::$module, 'Server Settings', self::$module, 'cost', 'qs_cost', 'Server Cost', '<p>The price to list the server at.</p>');
 	}
 }
