@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class Plugin {
 
-	public static $name = 'QuickServers';
+	public static $name = 'Rapid Deploy Servers';
 	public static $description = 'Allows selling of Servers that create a VPS using 100% of the resources to allow to manage the server in ways you can only with a VPS but while having a full servers worth of hardware at your disposal.';
 	public static $help = '';
 	public static $module = 'quickservers';
@@ -26,10 +26,10 @@ class Plugin {
 		'DELETE_PENDING_DAYS' => 30,
 		'SUSPEND_DAYS' => 14,
 		'SUSPEND_WARNING_DAYS' => 7,
-		'TITLE' => 'QuickServers',
-		'MENUNAME' => 'QuickServers',
+		'TITLE' => 'Rapid Deploy Servers',
+		'MENUNAME' => 'Rapid Deploy Servers',
 		'EMAIL_FROM' => 'support@interserver.net',
-		'TBLNAME' => 'QuickServers',
+		'TBLNAME' => 'Rapid Deploy Servers',
 		'TABLE' => 'quickservers',
 		'TITLE_FIELD' => 'qs_hostname',
 		'TITLE_FIELD2' => 'qs_ip',
@@ -48,7 +48,8 @@ class Plugin {
 		return [
 			self::$module.'.load_processing' => [__CLASS__, 'loadProcessing'],
 			self::$module.'.settings' => [__CLASS__, 'getSettings'],
-			self::$module.'.deactivate' => [__CLASS__, 'getDeactivate']
+			self::$module.'.deactivate' => [__CLASS__, 'getDeactivate'],
+			self::$module.'.queue' => [__CLASS__, 'getQueue'],
 		];
 	}
 
@@ -131,5 +132,27 @@ class Plugin {
 		$settings = $event->getSubject();
 		$settings->add_dropdown_setting(self::$module, 'General', 'outofstock_quickservers', 'Out Of Stock Quickservers', 'Enable/Disable Sales Of This Type', $settings->get_setting('OUTOFSTOCK_QUICKSERVERS'), ['0', '1'], ['No', 'Yes']);
 		$settings->add_master_text_setting(self::$module, 'Server Settings', self::$module, 'cost', 'qs_cost', 'Server Cost', '<p>The price to list the server at.</p>');
+	}
+
+
+	/**
+	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
+	 */
+	public static function getQueue(GenericEvent $event) {
+		//if (in_array($event['type'], [get_service_define('KVM_LINUX'), get_service_define('KVM_WINDOWS'), get_service_define('CLOUD_KVM_LINUX'), get_service_define('CLOUD_KVM_WINDOWS')])) {
+			$settings = get_module_settings(self::$module);
+			$serviceInfo = $event->getSubject();
+			myadmin_log(self::$module, 'info', self::$name.' Queue '.ucwords(str_replace('_', ' ', $serviceInfo['action'])).' for '.$settings['TBLNAME'].' '.$serviceInfo[$settings['PREFIX'].'_hostname'].'(#'.$serviceInfo[$settings['PREFIX'].'_id'].'/'.$serviceInfo[$settings['PREFIX'].'_vzid'].')', __LINE__, __FILE__);
+			$server_info = $serviceInfo['server_info'];
+			if (!file_exists(__DIR__.'/../../myadmin-kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl')) {
+				myadmin_log(self::$module, 'error', 'Call '.$serviceInfo['action'].' for '.$settings['TBLNAME'].' '.$serviceInfo[$settings['PREFIX'].'_hostname'].'(#'.$serviceInfo[$settings['PREFIX'].'_id'].'/'.$serviceInfo[$settings['PREFIX'].'_vzid'].') Does not Exist for '.self::$name, __LINE__, __FILE__);
+			} else {
+				$smarty = new \TFSmarty();
+				$smarty->assign($serviceInfo);
+				//$smarty->assign($settings['PREFIX'].'_vzid', isset($serviceInfo['module']) && $serviceInfo['module'] == 'quickservers' ? 'qs'.$serviceInfo[$settings['PREFIX'].'_vzid'] : (is_numeric($serviceInfo[$settings['PREFIX'].'_vzid']) ? (in_array($event['type'], [get_service_define('KVM_WINDOWS'), get_service_define('CLOUD_KVM_WINDOWS')]) ? 'windows'.$serviceInfo[$settings['PREFIX'].'_vzid'] : 'linux'.$serviceInfo[$settings['PREFIX'].'_vzid']) : $serviceInfo[$settings['PREFIX'].'_vzid']));
+				$event['output'] = $event['output'].$smarty->fetch(__DIR__.'/../../myadmin-kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl');
+			}
+			$event->stopPropagation();
+		//}
 	}
 }
