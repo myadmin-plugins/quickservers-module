@@ -1,5 +1,5 @@
 {
-	"name": "detain/quickservers-module",
+	"name": "detain/myadmin-quickservers-module",
 	"type": "myadmin-plugin",
 	"description": "QuickServers Module for MyAdmin",
 	"keywords": [
