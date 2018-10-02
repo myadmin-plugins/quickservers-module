@@ -154,13 +154,13 @@ class Plugin
 		$serviceInfo = $event->getSubject();
 		myadmin_log(self::$module, 'info', self::$name.' Queue '.ucwords(str_replace('_', ' ', $serviceInfo['action'])).' for '.$settings['TBLNAME'].' '.$serviceInfo[$settings['PREFIX'].'_hostname'].'(#'.$serviceInfo[$settings['PREFIX'].'_id'].'/'.$serviceInfo[$settings['PREFIX'].'_vzid'].')', __LINE__, __FILE__);
 		$server_info = $serviceInfo['server_info'];
-		if (!file_exists(__DIR__.'/../../kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl')) {
+		if (!file_exists(__DIR__.'/../../myadmin-kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl')) {
 			myadmin_log(self::$module, 'error', 'Call '.$serviceInfo['action'].' for '.$settings['TBLNAME'].' '.$serviceInfo[$settings['PREFIX'].'_hostname'].'(#'.$serviceInfo[$settings['PREFIX'].'_id'].'/'.$serviceInfo[$settings['PREFIX'].'_vzid'].') Does not Exist for '.self::$name, __LINE__, __FILE__);
 		} else {
 			$smarty = new \TFSmarty();
 			$smarty->assign($serviceInfo);
 			//$smarty->assign($settings['PREFIX'].'_vzid', isset($serviceInfo['module']) && $serviceInfo['module'] == 'quickservers' ? 'qs'.$serviceInfo[$settings['PREFIX'].'_vzid'] : (is_numeric($serviceInfo[$settings['PREFIX'].'_vzid']) ? (in_array($event['type'], [get_service_define('KVM_WINDOWS'), get_service_define('CLOUD_KVM_WINDOWS')]) ? 'windows'.$serviceInfo[$settings['PREFIX'].'_vzid'] : 'linux'.$serviceInfo[$settings['PREFIX'].'_vzid']) : $serviceInfo[$settings['PREFIX'].'_vzid']));
-			$event['output'] = $event['output'].$smarty->fetch(__DIR__.'/../../kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl');
+			$event['output'] = $event['output'].$smarty->fetch(__DIR__.'/../../myadmin-kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl');
 		}
 		$event->stopPropagation();
 		//}
