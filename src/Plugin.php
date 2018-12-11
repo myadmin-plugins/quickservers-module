@@ -142,8 +142,10 @@ class Plugin
          * @var \MyAdmin\Settings $settings
          **/
         $settings = $event->getSubject();
+        $settings->setTarget('module');
 		$settings->add_dropdown_setting(self::$module, _('General'), 'outofstock_quickservers', _('Out Of Stock Quickservers'), _('Enable/Disable Sales Of This Type'), $settings->get_setting('OUTOFSTOCK_QUICKSERVERS'), ['0', '1'], ['No', 'Yes']);
 		$settings->add_master_text_setting(self::$module, 'Server Settings', self::$module, 'cost', 'qs_cost', 'Server Cost', '<p>The price to list the server at.</p>');
+        $settings->setTarget('global');
 	}
 
 
