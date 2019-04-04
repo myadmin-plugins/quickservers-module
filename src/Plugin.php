@@ -61,7 +61,7 @@ class Plugin
 	public static function getDeactivate(GenericEvent $event)
 	{
 		$serviceClass = $event->getSubject();
-        myadmin_log(self::$module, 'info', self::$name.' Deactivation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
+		myadmin_log(self::$module, 'info', self::$name.' Deactivation', __LINE__, __FILE__, self::$module, $serviceClass->getId());
 		$GLOBALS['tf']->history->add(self::$module.'queue', $serviceClass->getId(), 'delete', '', $serviceClass->getCustid());
 	}
 
@@ -136,16 +136,16 @@ class Plugin
 	/**
 	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
 	 */
-    public static function getSettings(GenericEvent $event)
-    {
-        /**
-         * @var \MyAdmin\Settings $settings
-         **/
-        $settings = $event->getSubject();
-        $settings->setTarget('module');
+	public static function getSettings(GenericEvent $event)
+	{
+		/**
+		 * @var \MyAdmin\Settings $settings
+		 **/
+		$settings = $event->getSubject();
+		$settings->setTarget('module');
 		$settings->add_dropdown_setting(self::$module, _('General'), 'outofstock_quickservers', _('Out Of Stock Quickservers'), _('Enable/Disable Sales Of This Type'), $settings->get_setting('OUTOFSTOCK_QUICKSERVERS'), ['0', '1'], ['No', 'Yes']);
 		$settings->add_master_text_setting(self::$module, 'Server Settings', self::$module, 'cost', 'qs_cost', 'Server Cost', '<p>The price to list the server at.</p>');
-        $settings->setTarget('global');
+		$settings->setTarget('global');
 	}
 
 
