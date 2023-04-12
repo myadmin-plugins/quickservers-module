@@ -159,7 +159,7 @@ class Plugin
             myadmin_log(self::$module, 'error', 'Call '.$serviceInfo['action'].' for '.$settings['TBLNAME'].' '.$serviceInfo[$settings['PREFIX'].'_hostname'].'(#'.$serviceInfo[$settings['PREFIX'].'_id'].'/'.$serviceInfo[$settings['PREFIX'].'_vzid'].') Does not Exist for '.self::$name, __LINE__, __FILE__, self::$module, $serviceInfo[$settings['PREFIX'].'_id']);
         } else {
             $smarty = new \TFSmarty();
-            $smarty->registerPlugin('modifier', 'escapeshellarg');
+            $smarty->registerPlugin('modifier', 'escapeshellarg', 'escapeshellarg');
             $smarty->assign($serviceInfo);
             //$smarty->assign($settings['PREFIX'].'_vzid', isset($serviceInfo['module']) && $serviceInfo['module'] == 'quickservers' ? 'qs'.$serviceInfo[$settings['PREFIX'].'_vzid'] : (is_numeric($serviceInfo[$settings['PREFIX'].'_vzid']) ? (in_array($event['type'], [get_service_define('KVM_WINDOWS'), get_service_define('CLOUD_KVM_WINDOWS')]) ? 'windows'.$serviceInfo[$settings['PREFIX'].'_vzid'] : 'linux'.$serviceInfo[$settings['PREFIX'].'_vzid']) : $serviceInfo[$settings['PREFIX'].'_vzid']));
             $event['output'] = $event['output'].$smarty->fetch(__DIR__.'/../../myadmin-kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl');
