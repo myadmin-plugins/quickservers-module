@@ -154,7 +154,6 @@ class Plugin
         $settings = get_module_settings(self::$module);
         $serviceInfo = $event->getSubject();
         myadmin_log(self::$module, 'info', self::$name.' Queue '.ucwords(str_replace('_', ' ', $serviceInfo['action'])).' for '.$settings['TBLNAME'].' '.$serviceInfo[$settings['PREFIX'].'_hostname'].'(#'.$serviceInfo[$settings['PREFIX'].'_id'].'/'.$serviceInfo[$settings['PREFIX'].'_vzid'].')', __LINE__, __FILE__, self::$module, $serviceInfo[$settings['PREFIX'].'_id']);
-        $server_info = $serviceInfo['server_info'];
         if (!file_exists(__DIR__.'/../../myadmin-kvm-vps/templates/'.$serviceInfo['action'].'.sh.tpl')) {
             myadmin_log(self::$module, 'error', 'Call '.$serviceInfo['action'].' for '.$settings['TBLNAME'].' '.$serviceInfo[$settings['PREFIX'].'_hostname'].'(#'.$serviceInfo[$settings['PREFIX'].'_id'].'/'.$serviceInfo[$settings['PREFIX'].'_vzid'].') Does not Exist for '.self::$name, __LINE__, __FILE__, self::$module, $serviceInfo[$settings['PREFIX'].'_id']);
         } else {
