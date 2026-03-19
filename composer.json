@@ -1,40 +1,43 @@
 {
 	"name": "detain/myadmin-quickservers-module",
 	"type": "myadmin-plugin",
-	"description": "QuickServers Module for MyAdmin",
+	"description": "QuickServers (Rapid Deploy Servers) module for the MyAdmin control panel. Provides automated provisioning, lifecycle management, and billing integration for dedicated-hardware VPS instances.",
 	"keywords": [
 		"quickservers",
+		"rapid-deploy",
 		"administration",
-		"license"
+		"myadmin",
+		"server-provisioning",
+		"vps"
 	],
 	"license": "LGPL-2.1-only",
 	"authors": [
 		{
 			"name": "Joe Huss",
-			"homepage": "https:\/\/my.interserver.net\/"
+			"homepage": "https://my.interserver.net/"
 		}
 	],
 	"config": {
-		"bin-dir": "vendor\/bin",
+		"bin-dir": "vendor/bin",
 		"minimum-stability": "dev"
 	},
 	"require": {
-		"php": ">=5.0.0",
+		"php": ">=8.2",
 		"ext-soap": "*",
-		"symfony/event-dispatcher": "^5.0@stable",
+		"symfony/event-dispatcher": "^5.0|^6.0|^7.0",
 		"detain/myadmin-plugin-installer": "dev-master"
-    },
+	},
 	"require-dev": {
-		"phpunit/phpunit": "*",
-		"phpunit/phpunit-mock-objects": "*",
-		"vlucas/phpdotenv": "*",
-		"codeclimate/php-test-reporter": "dev-master",
-		"satooshi/php-coveralls": "*",
-		"codacy/coverage": "dev-master"
+		"phpunit/phpunit": "^9.6"
 	},
 	"autoload": {
 		"psr-4": {
 			"Detain\\MyAdminQuickservers\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Detain\\MyAdminQuickservers\\Tests\\": "tests/"
 		}
 	}
 }
