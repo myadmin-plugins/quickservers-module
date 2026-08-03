@@ -12,6 +12,9 @@
 namespace Detain\MyAdminQuickservers\Tests;
 
 use Detain\MyAdminQuickservers\Plugin;
+use Detain\MyAdminQuickservers\Tests\Support\HistorySpy;
+use Detain\MyAdminQuickservers\Tests\Support\LogSpy;
+use MyAdmin\App;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -28,13 +31,22 @@ class PluginTest extends TestCase
     private ReflectionClass $reflection;
 
     /**
-     * Set up the reflection instance for each test.
+     * Fresh history spy installed on the \MyAdmin\App facade for each test.
+     *
+     * @var HistorySpy
+     */
+    private HistorySpy $history;
+
+    /**
+     * Set up the reflection instance and framework spies for each test.
      *
      * @return void
      */
     protected function setUp(): void
     {
         $this->reflection = new ReflectionClass(Plugin::class);
+        $this->history = App::resetHistory();
+        LogSpy::reset();
     }
 
     // ========================================================================
@@ -750,22 +762,49 @@ class PluginTest extends TestCase
     }
 
     /**
-     * Verify getDeactivate references myadmin_log and history->add.
+     * Verify getDeactivate logs the deactivation and queues a 'delete'
+     * history entry for the service being torn down.
+     *
+     * This drives the handler and asserts what it actually did. The previous
+     * version grepped the method's source text for "myadmin_log" and
+     * "history->add", so it broke the moment the history call moved from
+     * $GLOBALS['tf']->history->add() to the \MyAdmin\App::history() facade,
+     * even though the behaviour was identical.
      *
      * @return void
      */
-    public function testGetDeactivateReferencesLoggingAndHistory(): void
+    public function testGetDeactivateLogsAndQueuesDeleteHistoryEntry(): void
     {
-        $method = $this->reflection->getMethod('getDeactivate');
-        $startLine = $method->getStartLine();
-        $endLine = $method->getEndLine();
-        $filename = $method->getFileName();
+        $serviceClass = new class {
+            /** @return int */
+            public function getId()
+            {
+                return 4242;
+            }
 
-        $lines = file($filename);
-        $body = implode('', array_slice($lines, $startLine - 1, $endLine - $startLine + 1));
+            /** @return int */
+            public function getCustid()
+            {
+                return 777;
+            }
+        };
 
-        $this->assertStringContainsString('myadmin_log', $body);
-        $this->assertStringContainsString('history->add', $body);
+        Plugin::getDeactivate(new GenericEvent($serviceClass));
+
+        $entries = $this->history->entries;
+        $this->assertCount(1, $entries, 'getDeactivate should record exactly one history entry');
+        $this->assertSame('quickserversqueue', $entries[0]['section'], 'the entry must land in the quickservers queue log');
+        $this->assertSame(4242, $entries[0]['type'], 'the queue log keys the entry by service id');
+        $this->assertSame('delete', $entries[0]['new'], 'deactivation must queue a delete action');
+        $this->assertSame('', $entries[0]['old']);
+        $this->assertSame(777, $entries[0]['custid'], 'the entry must be attributed to the service owner');
+
+        $logged = LogSpy::calls();
+        $this->assertCount(1, $logged, 'getDeactivate should log exactly once');
+        $this->assertSame('quickservers', $logged[0]['module']);
+        $this->assertSame('info', $logged[0]['level']);
+        $this->assertStringContainsString('Deactivation', $logged[0]['message']);
+        $this->assertSame(4242, $logged[0]['id'], 'the log line must reference the service id');
     }
 
     /**

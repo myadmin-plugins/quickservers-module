@@ -14,10 +14,15 @@ if (!defined('ANNIVERSARY_BILLING')) {
     define('ANNIVERSARY_BILLING', 2);
 }
 
+// Test doubles for \MyAdmin\App::history() and the myadmin_log() recorder.
+// Loaded before the function stubs below so myadmin_log() can delegate to it.
+require_once __DIR__ . '/support/doubles.php';
+
 // Stub global functions referenced by Plugin methods
 if (!function_exists('myadmin_log')) {
     function myadmin_log(string $module, string $level, string $message, $line = '', $file = '', string $section = '', $id = ''): void
     {
+        \Detain\MyAdminQuickservers\Tests\Support\LogSpy::record($module, $level, $message, $section, $id);
     }
 }
 
