@@ -1,6 +1,6 @@
 ---
 name: plugin-hook
-description: Adds a new event hook to Plugin::getHooks() and implements the corresponding static handler method with proper GenericEvent signature. Use when user says 'add hook', 'new event', 'handle event', or needs to respond to a new quickservers.* event. Do NOT use for modifying existing hook logic — only for registering new hooks. NOTE: for a plugin's contract/behavioral tests (tests/ContractTest.php, the shared harness, composer myadmin:scaffold-tests) use the plugin-contract-tests skill instead — this skill's reflection-only guidance predates that harness.
+description: Adds a new event hook to Plugin::getHooks() and implements the corresponding static handler method with proper GenericEvent signature. Use when user says 'add hook', 'new event', 'handle event', or needs to respond to a new quickservers.* event. Do NOT use for modifying existing hook logic — only for registering new hooks. For a plugin's contract or behavioral tests (tests/ContractTest.php, the shared harness, composer myadmin:scaffold-tests) use the plugin-contract-tests skill instead — this skill's reflection-only guidance predates that harness.
 ---
 <!-- myadmin-contract-harness-notice -->
 > ### ⚠️ Read this before the rest of the file

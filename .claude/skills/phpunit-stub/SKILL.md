@@ -1,6 +1,6 @@
 ---
 name: phpunit-stub
-description: Writes PHPUnit test methods under `tests/PluginTest.php` using stubs already defined in `tests/bootstrap.php`. Use when user says 'write test', 'add test', 'test this method', or adds a new method to `src/Plugin.php`. Covers static-property assertions, hook-mapping checks, and reflection-based source analysis for DB-touching methods. Do NOT use for integration tests, non-Plugin classes, or tests requiring a live database. NOTE: for a plugin's contract/behavioral tests (tests/ContractTest.php, the shared harness, composer myadmin:scaffold-tests) use the plugin-contract-tests skill instead — this skill's reflection-only guidance predates that harness.
+description: Writes PHPUnit test methods under `tests/PluginTest.php` using stubs already defined in `tests/bootstrap.php`. Use when user says 'write test', 'add test', 'test this method', or adds a new method to `src/Plugin.php`. Covers static-property assertions, hook-mapping checks, and reflection-based source analysis for DB-touching methods. Do NOT use for integration tests, non-Plugin classes, or tests requiring a live database. For a plugin's contract or behavioral tests (tests/ContractTest.php, the shared harness, composer myadmin:scaffold-tests) use the plugin-contract-tests skill instead — this skill's reflection-only guidance predates that harness.
 ---
 <!-- myadmin-contract-harness-notice -->
 > ### ⚠️ Read this before the rest of the file
